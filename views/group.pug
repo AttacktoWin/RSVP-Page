@@ -1,0 +1,56 @@
+extends layout
+
+block content
+    div(id="familyName" group-id=group.id) #{group.name} Family
+    table
+        thead
+            th Name
+            if group.hindu
+                th Wedding
+            if group.civil
+                th Civil
+                th Reception
+        each member in members
+            tr
+                td= member.name
+                if group.hindu
+                    if member.hindu
+                        td
+                            label(class='rsvp')
+                                input(type='checkbox' date='hindu' person=member.name name=`hindu${member.name}` value='rsvp' checked)
+                                span(class='checkmark')
+                    else
+                        td
+                            label(class='rsvp')
+                                input(type='checkbox' date='hindu' person=member.name name=`hindu${member.name}` value='rsvp')
+                                span(class='checkmark')
+                if group.civil
+                    if member.civil
+                        td
+                            label(class='rsvp')
+                                input(type='checkbox' date='civil' person=member.name name=`civil${member.name}` value='rsvp' checked)
+                                span(class='checkmark')
+                    else
+                        td
+                            label(class='rsvp')
+                                input(type='checkbox' date='civil' person=member.name name=`civil${member.name}` value='rsvp')
+                                span(class='checkmark')
+                    if member.dance
+                        td
+                            label(class='rsvp')
+                                input(type='checkbox' date='dance' person=member.name name=`dance${member.name}` value='rsvp' checked)
+                                span(class='checkmark')
+                    else
+                        td
+                            label(class='rsvp') 
+                                input(type='checkbox' date='dance' person=member.name name=`dance${member.name}` value='rsvp')
+                                span(class='checkmark')
+
+    br
+    div(id='song') Song Recommendations
+    div(id='song-container')
+        each song in group.requests
+            div(class='song')= song
+        div(class='song' id='add' add='true') + Add Song
+    div(id='submit-container')
+        input(type='button' name='submit' value='Submit' id='submit')
