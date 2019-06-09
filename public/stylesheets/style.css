@@ -13,7 +13,11 @@ head {
   background-color: #003862;
   color: white;
   height: auto;
+<<<<<<< HEAD
   width: 100%;
+=======
+  width: 94%;
+>>>>>>> Finished Site
   left: 0;
   margin: 0;
   padding: 3%;
@@ -21,6 +25,17 @@ head {
   font-family: Arial,Helvetica,sans-serif;
 }
 
+<<<<<<< HEAD
+=======
+#ham-container {
+  display: none;
+}
+
+.mobile-link {
+  display: none;
+}
+
+>>>>>>> Finished Site
 #title {
   text-decoration: none;
   color: white;
@@ -37,9 +52,14 @@ head {
 }
 
 #label {
+<<<<<<< HEAD
   width: 100%;
   padding-left: 3%;
   position: relative;
+=======
+  width: 97%;
+  padding-left: 3%;
+>>>>>>> Finished Site
   color: #FFFFFF;
   font: normal normal normal 14px/1.79em 'raleway',sans-serif;
   font-size: 2em;
@@ -91,7 +111,11 @@ table {
   background-color: white;
   table-layout: fixed;
   width: 90%;
+<<<<<<< HEAD
   margin: 5% 3% 5% 3%;
+=======
+  margin: 3% 3% 3% 3%;
+>>>>>>> Finished Site
   border-collapse: collapse;
   border: 2px solid #003862;
 }
@@ -108,7 +132,11 @@ th, td {
 th {
   font-weight: bold;
   background-color: #ffc1c6;
+<<<<<<< HEAD
   color: white;
+=======
+  color: black;
+>>>>>>> Finished Site
 }
 
 tbody tr:nth-child(odd) {
@@ -178,6 +206,15 @@ tbody tr:nth-child(odd) {
   padding: 1% 1%;
 }
 
+<<<<<<< HEAD
+=======
+#white {
+  font-size: 1.5em;
+  color: white;
+  text-align: center;
+}
+
+>>>>>>> Finished Site
 /* Weird checkboxes thing */
 
 .rsvp {
@@ -234,4 +271,70 @@ tbody tr:nth-child(odd) {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+<<<<<<< HEAD
+=======
+}
+
+@media only screen and (max-width: 600px) {
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-top: 5vh;
+    width: 100vw;
+    background-color: #181818;
+    height: 100vh;
+  }
+
+  .overlay #ham-container {
+    margin-bottom: 5vh;
+  }
+
+  .overlay .mobile-link {
+    display: block;
+  }
+  
+  #ham-container {
+    display: block;
+    width: 100%;
+    text-align: right;
+  }
+
+  .mobile-link {
+    text-decoration: none;
+    margin: auto;
+    margin-bottom: 0.5em;
+    text-align: center;
+    color: white;
+    font: normal normal normal 14px/1.79em 'raleway',sans-serif;
+    font-size: 1.5em;
+  }
+
+  .active {
+    color: #ffc1c6;
+  }
+
+  .site-header {
+    text-align: left;
+  }
+
+  #title {
+    font-size: 2em;
+    padding-left: 0.75em;
+  }
+
+  .nav {
+    display: none;
+  }
+  
+  #searchbox {
+    font-size: 2.5em;
+  }
+  
+  #label {
+    font-size: 3em;
+  }
+
+>>>>>>> Finished Site
 }

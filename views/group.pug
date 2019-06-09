@@ -2,13 +2,24 @@ extends layout
 
 block content
     div(id="familyName" group-id=group.id) #{group.name} Family
+<<<<<<< HEAD
+=======
+    br
+    div(id='label') Please check events you are attending:
+>>>>>>> Finished Site
     table
         thead
             th Name
             if group.hindu
+<<<<<<< HEAD
                 th Wedding
             if group.civil
                 th Civil
+=======
+                th Hindu Ceremony
+            if group.civil
+                th Civil Ceremony
+>>>>>>> Finished Site
                 th Reception
         each member in members
             tr

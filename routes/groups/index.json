@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [{"name":"","id":0,"main":"","members":0,"requests":[],"hindu":true,"civil":false}]
+=======
+[{"name":"Doe","id":0,"main":"John","members":0,"requests":["Uptown Funk"],"hindu":true,"civil":true}]
+>>>>>>> Finished Site
