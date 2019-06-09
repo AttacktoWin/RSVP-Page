@@ -27,11 +27,6 @@ router.get('/search/:term', function(req, res) {
 
 router.get('/group/:groupId', function (req, res, next) {
   // Render group page by id
-<<<<<<< HEAD
-  var family = fs.readFileSync(__dirname + `/groups/${req.params.groupId}.json`);
-  family = JSON.parse(family);
-  res.render('group', { title: "" + groups[req.params.groupId].name + " Family | Husak & Bhatrimony", group: groups[req.params.groupId], members: family });
-=======
   var family;
   try {
     family = fs.readFileSync(__dirname + `/groups/${req.params.groupId}.json`);
@@ -44,7 +39,6 @@ router.get('/group/:groupId', function (req, res, next) {
       res.render('groupError', {title: "Oops! | Husak & Bhatrimony"})
     });
   }
->>>>>>> Finished Site
 });
 
 router.get('/group/:groupId/add', function (req, res) {
@@ -102,10 +96,7 @@ router.post('/group/:groupId', body('group').isArray(), function (req, res) {
   }
   groupFile = JSON.stringify(groupFile);
   fs.writeFileSync(__dirname + `/groups/${req.params.groupId}.json`, groupFile);
-<<<<<<< HEAD
-=======
   res.send(200);
->>>>>>> Finished Site
 });
 
 router.get('/finish', function(req, res) {

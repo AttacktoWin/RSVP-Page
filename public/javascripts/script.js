@@ -1,11 +1,4 @@
 $(document).ready(function() {
-<<<<<<< HEAD
-    // SEARCH PAGE
-    
-    $('#searchbox').on('focus keypress', function() {
-        var term = $('#searchbox').val().toLowerCase().trim();
-        $(".group").remove();
-=======
     // MOBILE MENU
     $(".hamburger").on("click", function(e) {
         $(".hamburger").toggleClass("is-active");
@@ -20,32 +13,11 @@ $(document).ready(function() {
         if (term == "") {
             $(".group").remove();
         }
->>>>>>> Finished Site
 
 
 
         $.get(`https://rsvp.husakandbhatrimony.com/search/${term}`, function(data, status) {
             data = JSON.parse(data);
-<<<<<<< HEAD
-            for (var i = 0; i < data.length; i++) {
-                var element = "";
-                if (data[i].members > 0) {
-                    var members = data[i].members.toString();
-                    var id = data[i].id;
-
-                    element += `<div class="group" group-id="${id}">
-                                    <div class="name">${data[i].name}</div>
-                                    <div class="main">${data[i].main}<div>
-                                    <div class="members">+${members} more</div>
-                                </div>`
-                } else {
-                    element += `<div class="group" group-id="${data[i].id}">
-                                    <div class="name">${data[i].name}</div>
-                                    <div class="main">${data[i].main}<div>
-                                </div>`
-                }
-                $('.search').append(element);
-=======
             $(".group").remove();
             if (data.length == 0) {
                 var element = `<div class="group">
@@ -72,21 +44,15 @@ $(document).ready(function() {
                     }
                     $('.search').append(element);
                 }
->>>>>>> Finished Site
             }
         });
     });
 
     $('.search').on('click', 'div', function() {
-<<<<<<< HEAD
-        var groupId = $(this).attr('group-id');
-        window.location.href = `https://rsvp.husakandbhatrimony.com/group/${groupId}`;
-=======
         if ($(this).attr('group-id')) {
             var groupId = $(this).attr('group-id');
             window.location.href = `https://rsvp.husakandbhatrimony.com/group/${groupId}`;
         }
->>>>>>> Finished Site
     });
 
 
@@ -175,11 +141,7 @@ $(document).ready(function() {
 
         $.post(`https://rsvp.husakandbhatrimony.com/group/${groupId}`, {group: group}, function(data, status) {
             if (status == 'success') {
-<<<<<<< HEAD
-                window.location.href = 'https://rsvp.husakandbhatrimony.com/finish';
-=======
                 window.location.href = 'https://rsvp.husakandbhatrimony.com/finish'
->>>>>>> Finished Site
             }
         });
     });
