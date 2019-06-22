@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    div(id="familyName" group-id=group.id) #{group.name} Family
+    div(id="familyName" group-id=group._id) #{group.name} Family
     br
     div(id='label') Please check events you are attending:
     table
@@ -12,7 +12,7 @@ block content
             if group.civil
                 th Civil Ceremony
                 th Reception
-        each member in members
+        each member in group.people
             tr
                 td= member.name
                 if group.hindu

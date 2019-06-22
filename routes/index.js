@@ -2,7 +2,30 @@ var express = require('express');
 var router = express.Router();
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-var groups = require('./groups/index.json');
+
+const mongoose = require('mongoose');
+const uri = "mongodb+srv://<user>:<pass>@mongourl";
+mongoose.connect(uri, { useNewUrlParser: true, useFindAndModify: false});
+const db = mongoose.connection;
+
+var Schema = mongoose.Schema;
+var peopleSchema = new Schema({
+  name: String,
+  hindu: Boolean,
+  civil: Boolean,
+  dance: Boolean
+});
+var groupSchema = new Schema({
+  name: String,
+  main: String,
+  members: Number,
+  requests: [String],
+  hindu: Boolean,
+  civil: Boolean,
+  people: [peopleSchema]
+});
+var groupModel = mongoose.model('group', groupSchema, 'groups');
+
 var fs = require('fs');
 
 /* GET home page. */
@@ -12,26 +35,25 @@ router.get('/', function(req, res, next) {
 
 router.get('/search/:term', function(req, res) {
   // query database files
-  var data = [];
+  var query = {name: new RegExp(req.params.term, 'i')};
 
-  for (var i = 0; i < groups.length; i++) {
-    var name = groups[i].name.toLowerCase();
+  groupModel.find(query).exec((err, result) => {
+    if (err) throw err;
+    var data = result;
+    data = JSON.stringify(data);
+    res.send(data);
+  });
 
-    if (name.includes(req.params.term)) {
-      data.push(groups[i]);
-    }
-  }
-  data = JSON.stringify(data);
-  res.send(data);
+  
 });
 
 router.get('/group/:groupId', function (req, res, next) {
   // Render group page by id
-  var family;
   try {
-    family = fs.readFileSync(__dirname + `/groups/${req.params.groupId}.json`);
-    family = JSON.parse(family);
-    res.render('group', { title: "" + groups[req.params.groupId].name + " Family | Husak & Bhatrimony", group: groups[req.params.groupId], members: family });
+    // MONGO Connect
+    groupModel.findById(req.params.groupId, '_id name requests hindu civil people').exec((err, result) => {
+      res.render('group', { title: "" + result.name + " Family | Husak & Bhatrimony", group: result});
+    });
   } catch (err) {
     fs.writeFile(__dirname + `/../log/${Date.now()}.txt`, err, (err) => {
       if (err) throw err;
@@ -42,61 +64,48 @@ router.get('/group/:groupId', function (req, res, next) {
 });
 
 router.get('/group/:groupId/add', function (req, res) {
-  res.send(groups[req.params.groupId].requests);
+  groupModel.findById(req.params.groupId, 'requests', (err, result) => {
+    if (err) throw err;
+    requests = result;
+    res.send(result);
+  });
 });
 
 router.get('/group/:groupId/add/:song', function (req, res) {
   // Add new song to group requests
-  var songs = groups[req.params.groupId].requests;
-  var found = false;
-
-  for (var i = 0; i < songs.length; i++) {
-    if(req.params.song.toLowerCase() == songs[i].toLowerCase()) {
-      found = true;
-    }
-  }
-  if (found) {
-    res.send(songs);
-  } else {
-      // songs.push(req.params.song);
-      groups[req.params.groupId].requests.push(req.params.song);
-      res.send(songs);
-      fs.writeFileSync(__dirname + '/groups/index.json', JSON.stringify(groups));
-  }
+  groupModel.findByIdAndUpdate(req.params.groupId, {$addToSet: {requests: req.params.song}}, {new: true}, (err, result) => {
+    if (err) throw err;
+    res.send(result.requests);
+  });
 });
 
 router.get('/group/:groupId/remove/:song', function (req, res, next) {
   // Remove Song from requests
-  var songs = groups[req.params.groupId].requests;
-  var found = false;
-  for (var i = 0; i < songs.length; i++) {
-    if (songs[i].toLowerCase() == req.params.song.toLowerCase()) {
-      songs.splice(i, 1);
-      groups[req.params.groupId].requests.splice(i, 1);
-      res.send(songs);
-      found = true;
-      fs.writeFileSync(__dirname + '/groups/index.json', JSON.stringify(groups));
-    }
-  }
-  if (!found) {
-    res.send(songs);
-  }
+  groupModel.findByIdAndUpdate(req.params.groupId, {$pull: {requests: req.params.song}}, {new: true}, (err, result) => {
+    if (err) throw err;
+    res.send(result.requests);
+  });
 });
 
 router.post('/group/:groupId', body('group').isArray(), function (req, res) {
   req.body.group = JSON.parse(req.body.group);
 
-  var groupFile = fs.readFileSync(__dirname + `/groups/${req.params.groupId}.json`);
-  groupFile = JSON.parse(groupFile);
-
-  for (var i = 0; i < req.body.group.length; i++) {
-    groupFile[i].hindu = req.body.group[i].hindu;
-    groupFile[i].civil = req.body.group[i].civil;
-    groupFile[i].dance = req.body.group[i].dance;
-  }
-  groupFile = JSON.stringify(groupFile);
-  fs.writeFileSync(__dirname + `/groups/${req.params.groupId}.json`, groupFile);
-  res.send(200);
+  groupModel.findById(req.params.groupId)
+    .exec((err, result) => {
+      if (err) throw err;
+      for (var i = 0; i < result.people.length; i++) {
+        result.people[i].hindu = req.body.group[i].hindu;
+        result.people[i].civil = req.body.group[i].civil;
+        result.people[i].dance = req.body.group[i].dance;
+      }
+      result.save(err => {
+        if (err) throw err;
+        fs.writeFile(__dirname + `/../log/rsvp/${Date.now()}.txt`, `${req.params.groupId} has RSVPd`, (err) => {
+          if (err) throw err;
+        });
+        res.sendStatus(200);
+      });
+    });
 });
 
 router.get('/finish', function(req, res) {

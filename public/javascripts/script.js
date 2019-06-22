@@ -29,7 +29,7 @@ $(document).ready(function() {
                     var element = "";
                     if (data[i].members > 0) {
                         var members = data[i].members.toString();
-                        var id = data[i].id;
+                        var id = data[i]._id;
     
                         element += `<div class="group" group-id="${id}">
                                         <div class="name">${data[i].name}</div>
@@ -37,7 +37,7 @@ $(document).ready(function() {
                                         <div class="members">+${members} more</div>
                                     </div>`
                     } else {
-                        element += `<div class="group" group-id="${data[i].id}">
+                        element += `<div class="group" group-id="${data[i]._id}">
                                         <div class="name">${data[i].name}</div>
                                         <div class="main">${data[i].main}<div>
                                     </div>`
